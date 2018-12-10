@@ -1,0 +1,45 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>LogIn</title>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+<script th:src="@{/js/signUpCheck.js}" ></script>
+<script th:src="@{/js/auth.js}" ></script>
+</head>
+<body>
+<div class="container" id="loginFormDiv">
+	<div class="row">
+        <div class="col-md-12">
+            <form id="loginForm">
+            <fieldset><legend class="text-center">LogIn</legend>
+
+            <div class="form-group">
+                <label for="username"><span class="req"> </span> Enter username: </label>
+                    <input required class="form-control" type="text" minlength="6" maxlength=" 32" name="username" id = "username" onkeyup = "validateUsername(this)" placeholder="minimum 6 letters" />
+            </div>
+
+            <div class="form-group">
+                <label for="password"><span class="req"> </span> Password: </label>
+                    <input required name="password" type="password" class="form-control inputpass" minlength="6"  maxlength="16"  id="password"  />
+            </div>
+
+            <div class="form-group">
+                <input formmethod="post" class="btn btn-primary" type="submit" name="submit_log" value="Login" >
+            </div>
+            </fieldset>
+            </form>
+
+        </div>
+
+	</div>
+</div>
+
+</body>
+</html>

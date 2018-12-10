@@ -1,0 +1,208 @@
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-color: #ccc;
+}
+
+.tg td {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: #ccc;
+    color: #333;
+    background-color: #fff;
+}
+
+.tg th {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px 5px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    word-break: normal;
+    border-color: #ccc;
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+fieldset {
+    border: thin solid #ccc;
+    border-radius: 10px;
+    padding: 20px 20px 20px 40px;
+    background: #fbfbfb;
+}
+
+legend {
+    margin-bottom: 35px;
+    color: #678;
+}
+
+.form-control {
+    width: 95%;
+}
+
+label small {
+    color: #678 !important;
+}
+
+span.req {
+    color: maroon;
+    font-size: 112%;
+}
+
+form.col-md-12 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.warning {
+    color: #ff6666;
+}
+
+
+.softText {
+    font-weight: 400;
+}
+
+.buttons {
+    width: 100%;
+    height: 65px;
+    font-size: 140%;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+#main-picture {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#logreg-form {
+    width: 550px;
+
+}
+
+.logreg-legend-text {
+    margin-bottom: -6%;
+    color: rgba(0, 64, 27, 0.75);
+}
+
+#logreg {
+    margin-top: -23%;
+    margin-bottom: 3%;
+}
+
+#submit_log {
+    margin-right: 10px;
+}
+
+#submit_reg {
+    margin-left: 10px;
+}
+
+body {
+    font-weight: 400;
+    font-family: "Nunito", "Helvetica Neue", arial, sans-serif;
+}
+
+.modal {
+    overflow: visible;
+}
+
+#regForm{
+    display: none;
+}
+
+#logregFormDiv{
+    margin-top: -50%;
+    vertical-align: bottom ;
+}
+
+#bodyPartP{
+    background: white;
+    border-radius: 40px;
+    box-shadow: -3px 0 15px 1px rgba(0, 0, 0, 0.08);
+    padding-bottom: 35px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+#headerCuber{
+    color: #6a9020;
+    font-family: "Rage Italic", "bold", serif;
+}
+
+#sign-out{
+    margin-top: -8px;
+}
+
+.type-container{
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.type-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+.type-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.type-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.type-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.type-container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+
+.courier-type{
+    margin-left: 60px;
+}
+.courier-type .checkmark{
+    margin-left: 120px;
+}

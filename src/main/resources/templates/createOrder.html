@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create New Order</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css"
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+          href="../static/css/main.css" />
+
+</head>
+<body>
+<form action="#" th:action="@{/submitNewOrder}" th:object="${deliveryOrder}" method="post">
+    <table>
+        <tr>
+            <td>Product Name:</td>
+            <td><label>
+                <input type="text" th:field="*{productName}"/>
+            </label></td>
+            <td th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}">ProductName Error</td>
+        </tr>
+        <tr>
+            <td>Weight:</td>
+            <td><input type="number" th:field="*{weight}" /></td>
+            <td th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}">Weight Error</td>
+        </tr>
+        <tr>
+            <td>Volume:</td>
+            <td><input type="number" th:field="*{volume}" /></td>
+            <td th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}">Volume Error</td>
+        </tr>
+        <tr>
+            <td>From Node:</td>
+            <td><input type="number" th:field="*{fromNodeLocation.id}" /></td>
+        </tr>
+        <tr>
+            <td>To Node:</td>
+            <td><input type="number" th:field="*{toNodeLocation.id}" /></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"/></td>
+            <td><input type="reset" value="Reset" /></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript"
+        src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

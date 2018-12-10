@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf Hello World Example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        			  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,800" rel="stylesheet">
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <script th:src="@{/js/signUpCheck.js}" ></script>
+    <script th:src="@{/js/auth.js}" ></script>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!-- header -->
+    <section class="w3layouts-header py-2">
+        <div class="container">
+              <!-- header -->
+        <header>
+                <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
+
+                    <h1>
+                        <a class="navbar-brand" href="/" id="headerCuber">
+                          CUBER
+                        </a>
+                    </h1>
+                    <button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-lg-auto text-center">
+                            <li class="nav-item active  mr-3">
+                                <a class="nav-link" href="index.html">Home
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item  mr-3">
+                                <a class="nav-link" href="about.html">about</a>
+                            </li>
+                             <li class="nav-item  mr-3">
+                                <a class="nav-link" href="services.html">Services</a>
+                            </li>
+                            <li class="nav-item mr-3">
+                                <a class="nav-link" href="contact.html">contact</a>
+                            </li>
+                            <li class="nav-item mr-3">
+                                <button type="button" class="btn btn-secondary" id="sign-out">SignOut</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                </nav>
+        </header>
+        <!-- //header -->
+        </div>
+    </section>
+<!-- //header -->
+<!-- banner -->
+    <section class="banner-main-picture">
+        <div class="main-picture">
+            <img id="main-picture" class="container-fluid" th:src="@{images/main-picture.png}">
+        </div>
+    </section>
+<!-- //banner -->
+<!-- banner bottom -->
+    <section id="logreg">
+
+        <div class="container" id="logregFormDiv">
+            <div class="col-md-12">
+                <div id="logreg-form">
+                    <form id="loginForm">
+                        <fieldset>
+                        <div class="login-form-group">
+                            <label for="username"> Enter your username: </label>
+                                <input required class="form-control" type="text" minlength="4" maxlength=" 32" name="username" id = "username" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password"> Enter your password: </label>
+                                <input required name="password" type="password" class="form-control inputpass"  id="password"  />
+                        </div>
+
+                        <div class="form-group" role="group">
+                            <input formmethod="post" class="btn btn-primary" type="submit" name="submit_log" value="SignIn" id="submit_log" >
+                            <span>or</span>
+                            <button type="button" class="btn btn-success" id="to-reg">SignUp</button>
+                        </div>
+                        </fieldset>
+                    </form>
+                    <form id="regForm">
+                        <fieldset>
+                        <div class="reg-form-group">
+                            <label for="username"><span class="req">* </span> Enter username: </label>
+                                <input required class="form-control" type="text" minlength="6" maxlength=" 32" name="username" id = "username" onkeyup = "validateUsername(this)" placeholder="minimum 6 letters" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstName"><span class="req">* </span> Enter First name: </label>
+                                <input required type="text" name="firstName" id = "firstName" class="form-control" maxlength="32" onkeyup = "validateFirstName(this); return false;" placeholder="First Name"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName"><span class="req"> </span> Enter Last name: </label>
+                                <input required class="form-control" type="text" name="lastName" id = "lastName" maxlength="45" onkeyup = "validateLastName(this); return false;" placeholder="Last Name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age"><span class="req">* </span> Enter Your Age: </label>
+                                <input required class="form-control" type="number" name="age" id = "age" min="18" onkeyup = "validateAge(this); return false;" placeholder="Age" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email"><span class="req">* </span> Enter Email: </label>
+                                <input required class="form-control" type="text" name="email" id = "email" minlength="6" maxlength="32"  onchange="email_validate(this.value); return false;" />
+                                   <div class="status" id="emailStatus"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password"><span class="req">* </span> Password: </label>
+                                <label for="pass1"></label><input required name="password" type="password" class="form-control inputpass" minlength="6"  maxlength="16"  id="pass1" onchange="checkPass(); return false;" />
+
+                            <label for="password"><span class="req">* </span> Confirm Password: </label>
+                                <input required name="password" type="password" class="form-control inputpass" minlength="6" maxlength="16" placeholder="Enter again to validate"  id="pass2" onkeyup="checkPass(); return false;" />
+                                    <span id="confirmMessage" class="confirmMessage"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input formmethod="post" class="btn btn-success" type="submit" name="submit_reg" value="Register" >
+                            <span>or</span>
+                            <button type="button" class="btn btn-primary" id="to-log">SignIn</button>
+                        </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- //banner bottom -->
+<!-- modals-->
+<div id="loginErrorModal" class="modal">
+  <div id="loginErrorBody"></div>
+</div>
+<div id="succRegModal" class="modal">
+  <div id="succRegBody"></div>
+</div>
+<div id="RegErrorModal" class="modal">
+  <div id="RegErrorBody"></div>
+</div>
+
+
+
+</body>
+</html>

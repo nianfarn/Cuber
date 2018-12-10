@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Data</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css"
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+          href="../static/css/main.css" />
+
+</head>
+<body>
+    <p th:text="'Product : '+${order.productName}" ></p>
+    <p th:text="'Weight : '+${order.weight}" ></p>
+    <p th:text="'Volume : '+${order.volume}" ></p>
+    <p th:text="'From : '+${order.fromNodeLocation.address}" ></p>
+    <p th:text="'To : '+${order.toNodeLocation.address}" ></p>
+    <p th:text="'Price : '+${order.price}" ></p>
+    <p th:text="'Status : '+${order.status.status}" ></p>
+    <form action="#" th:action="@{/confirmNewOrderAdding}" th:object="${order}" method="POST">
+        <input type="submit" value="Submit"/>
+    </form>
+
+<script type="text/javascript"
+        src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

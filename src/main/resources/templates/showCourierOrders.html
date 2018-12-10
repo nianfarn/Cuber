@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Courier Orders</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css"
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+          href="../static/css/main.css" />
+
+</head>
+<body>
+<div th:if ="${not #lists.isEmpty(couriersOrders)}">
+    <table class="tg">
+        <tr>
+            <th width="80">ID</th>
+            <th width="120">Product</th>
+            <th width="80">Weight</th>
+            <th width="80">Volume</th>
+            <th width="150">From</th>
+            <th width="150">To</th>
+            <th width="100">Price</th>
+            <th width="100">Status</th>
+            <th width="120">In transit</th>
+            <th width="120">Arrival</th>
+        </tr>
+        <th:block th:each="order : ${couriersOrders}">
+            <tr>
+                <td><p th:text="${order.id}" ></p></td>
+                <td><p th:text="${order.productName}" ></p></td>
+                <td><p th:text="${order.weight}" ></p></td>
+                <td><p th:text="${order.volume}" ></p></td>
+                <td><p th:text="${order.fromNodeLocation.address}" ></p></td>
+                <td><p th:text="${order.toNodeLocation.address}" ></p></td>
+                <td><p th:text="${order.price}" ></p></td>
+                <td><p th:text="${order.status.status}" ></p></td>
+                <td><a th:href="@{'/inTransit/'+${order.id} }">In Transit</a></td>
+                <td><a th:href="@{'/confirmArrival/'+${order.id} }">Confirm Arrival</a></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+
+<script type="text/javascript"
+        src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,13 +1,15 @@
 package com.samsol.cuber.controllers;
 
 import com.samsol.cuber.dto.ClientDto;
-import com.samsol.cuber.entities.Client;
+import com.samsol.cuber.dto.CourierDto;
+import com.samsol.cuber.dto.UserDetailsDto;
 import com.samsol.cuber.services.crud.ClientCRUDService;
 import com.samsol.cuber.services.crud.CourierCRUDService;
+import com.samsol.cuber.services.crud.UserDetailsCrudService;
 import com.samsol.cuber.services.security.JwtAuthenticationRequest;
 import com.samsol.cuber.services.security.JwtRegistrationRequest;
 import com.samsol.cuber.services.security.JwtTokenUtil;
-import com.samsol.cuber.services.security.JwtClient;
+import com.samsol.cuber.services.security.JwtUser;
 import com.samsol.cuber.services.security.responces.JwtAuthenticationResponse;
 import com.samsol.cuber.services.security.responces.JwtRegistrationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,8 +49,11 @@ public class AuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    @Qualifier("jwtClientDetailsService")
+    @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserDetailsCrudService userDetailsCrudService;
 
     @Autowired
     private CourierCRUDService courierCRUDService;
@@ -54,7 +61,8 @@ public class AuthenticationRestController {
     @Autowired
     private ClientCRUDService clientCRUDService;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
+
+    @PostMapping(value = "${jwt.route.authentication.path}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
@@ -62,27 +70,43 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(token));
     }
 
-    @RequestMapping(value = "${jwt.route.registration.path}", method = RequestMethod.POST)
+    @PostMapping(value = "${jwt.route.registration.path}")
     public ResponseEntity<?> createNewUser(@RequestBody @Valid JwtRegistrationRequest registrationRequest,  BindingResult result){
         if (result.hasErrors()) return ResponseEntity.badRequest().body(new JwtRegistrationResponse("Not valid data"));
-        String username = registrationRequest.getUsername();
-        if(clientCRUDService.getClientByUsername(username)==null){
-            ClientDto clientDto = clientCRUDService.generateNewClient(registrationRequest);
-            clientCRUDService.addClient(clientDto);
-            return ResponseEntity.ok().body(new JwtRegistrationResponse("Client was successfully created!"));
-        }else{
-            return ResponseEntity.badRequest().body(new JwtRegistrationResponse("Already exist"));
+        UserDetailsDto userDetailsDto = userDetailsCrudService.generateNewUserDetails(registrationRequest);
+        String username = userDetailsDto.getUsername();
+        String email = userDetailsDto.getEmail();
+        if (userDetailsCrudService.getUserDetailsByUsername(username) == null && userDetailsCrudService.getUserDetailsByEmail(email) == null) {
+            userDetailsCrudService.addUserDetails(userDetailsDto);
+            switch (userDetailsDto.getAuthorityName()){
+                case ROLE_CLIENT:
+                    ClientDto clientDto = new ClientDto();
+                    clientDto.setId(0L);
+                    clientDto.setUserDetailsId(userDetailsCrudService.getUserDetailsByUsername(username).getId());
+                    clientCRUDService.addClient(clientDto);
+                    return ResponseEntity.ok().body(new JwtRegistrationResponse("Client was successfully created!"));
+                case ROLE_COURIER:
+                    CourierDto courierDto = new CourierDto();
+                    courierDto.setId(0L);
+                    courierDto.setCurrentNodeId(0L);
+                    courierDto.setUserDetailsId(userDetailsCrudService.getUserDetailsByUsername(username).getId());
+                    courierCRUDService.addCourier(courierDto);
+                    return ResponseEntity.ok().body(new JwtRegistrationResponse("Courier was successfully created!"));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(new JwtRegistrationResponse("User already exist"));
         }
-
+        return null;
     }
 
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
+
+    @GetMapping(value = "${jwt.route.authentication.refresh}")
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        JwtClient user = (JwtClient) userDetailsService.loadUserByUsername(username);
+        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
@@ -91,6 +115,7 @@ public class AuthenticationRestController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
 
     @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {

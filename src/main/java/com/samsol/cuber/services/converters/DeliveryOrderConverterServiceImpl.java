@@ -33,8 +33,8 @@ public class DeliveryOrderConverterServiceImpl implements ConverterService<Deliv
         deliveryOrderDto.setStatus(deliveryOrder.getStatus());
         deliveryOrderDto.setCourierId(deliveryOrder.getDeliveryCourier().getId());
         deliveryOrderDto.setClientId(deliveryOrder.getClient().getId());
-        deliveryOrderDto.setFromNodeLocationId(deliveryOrder.getFromNodeLocation().getId());
-        deliveryOrderDto.setToNodeLocationId(deliveryOrder.getToNodeLocation().getId());
+        deliveryOrderDto.setFromNodeId(deliveryOrder.getFromNodeLocation().getId());
+        deliveryOrderDto.setToNodeId(deliveryOrder.getToNodeLocation().getId());
         return deliveryOrderDto;
     }
 
@@ -49,8 +49,8 @@ public class DeliveryOrderConverterServiceImpl implements ConverterService<Deliv
         deliveryOrder.setStatus(deliveryOrderDto.getStatus());
         deliveryOrder.setDeliveryCourier(courierRepository.findById(deliveryOrderDto.getCourierId()).orElse(null));
         deliveryOrder.setClient(clientRepository.findById(deliveryOrderDto.getClientId()).orElse(null));
-        deliveryOrder.setFromNodeLocation(nodeRepository.findById(deliveryOrderDto.getFromNodeLocationId()).orElse(null));
-        deliveryOrder.setToNodeLocation(nodeRepository.findById(deliveryOrderDto.getToNodeLocationId()).orElse(null));
+        deliveryOrder.setFromNodeLocation(nodeRepository.findById(deliveryOrderDto.getFromNodeId()).orElse(null));
+        deliveryOrder.setToNodeLocation(nodeRepository.findById(deliveryOrderDto.getToNodeId()).orElse(null));
         return deliveryOrder;
     }
 }

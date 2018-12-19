@@ -8,8 +8,9 @@ import java.util.Collection;
 import java.util.Date;
 
 
-public class JwtClient implements UserDetails {
+public class JwtUser implements UserDetails {
 
+    private static final long serialVersionUID = 3016364849654090191L;
     private final Long id;
     private final String nickname;
     private final String firstName;
@@ -22,7 +23,7 @@ public class JwtClient implements UserDetails {
     private final Date lastPasswordResetDate;
 
 
-    public JwtClient(
+    public JwtUser(
             Long id,
             String nickname,
             String firstName,

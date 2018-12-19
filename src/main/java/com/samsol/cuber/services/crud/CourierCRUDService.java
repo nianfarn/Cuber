@@ -1,5 +1,6 @@
 package com.samsol.cuber.services.crud;
 
+import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.services.security.JwtRegistrationRequest;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,7 @@ public interface CourierCRUDService {
 
     List<CourierDto> getAllCouriers();
 
-    CourierDto getCourierByUsername(String nickname);
-
     List<CourierDto> getReadyToGoCouriers();
 
-    CourierDto generateNewCourier(JwtRegistrationRequest registrationRequest);
+    CourierDto getCourierByUserDetailsId(Long id);
 }

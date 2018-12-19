@@ -1,0 +1,47 @@
+package com.samsol.cuber.services.security;
+
+import com.samsol.cuber.dto.ClientDto;
+import com.samsol.cuber.dto.UserDetailsDto;
+import com.samsol.cuber.entities.AuthorityName;
+import com.samsol.cuber.entities.UserDetails;
+import com.samsol.cuber.services.crud.AuthorityCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public final class JwtUserFactory {
+
+    @Autowired
+    private AuthorityCrudService authorityCrudService;
+
+    private JwtUserFactory() {
+    }
+
+    public JwtUser create(UserDetailsDto userDetailsDto) {
+        List<AuthorityName> authorityNames = new ArrayList<>();
+        authorityNames.add(userDetailsDto.getAuthorityName());
+        return new JwtUser(
+                userDetailsDto.getId(),
+                userDetailsDto.getUsername(),
+                userDetailsDto.getFirstName(),
+                userDetailsDto.getLastName(),
+                userDetailsDto.getEmail(),
+                userDetailsDto.getPassword(),
+                userDetailsDto.getAge(),
+                mapToGrantedAuthorities(authorityNames),
+                userDetailsDto.getEnabled(),
+                userDetailsDto.getLastPasswordResetDate());
+    }
+
+    private List<GrantedAuthority> mapToGrantedAuthorities(List<AuthorityName> authorityNames) {
+        return authorityNames.stream()
+                .map(authorityName -> new SimpleGrantedAuthority(authorityName.name()))
+                .collect(Collectors.toList());
+    }
+}

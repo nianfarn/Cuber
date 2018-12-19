@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CourierRepository extends CrudRepository<Courier, Long> {
-    Courier findByUsername(String username);
-
+    Courier findByCourierDetailsId(Long id);
     List<Courier> findAllByReadyToGo(boolean bool);
 }

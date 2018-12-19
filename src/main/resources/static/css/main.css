@@ -206,3 +206,24 @@ body {
 .courier-type .checkmark{
     margin-left: 120px;
 }
+
+.radio-but{
+    margin-left: 130px;
+}
+
+.main-page-header{
+    background: rgb(255, 222, 82);
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.tg{
+    width: 100%;
+}
+
+.small-width{
+    width: 400px;
+}
+

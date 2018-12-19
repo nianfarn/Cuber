@@ -1,16 +1,32 @@
 $(function () {
     // VARIABLES =============================================================
-    var TOKEN_KEY = "jwtToken"
-    var $signout = $("#sign-out").hide();
+    var TOKEN_KEY = "jwtToken";
+    var $signOut = $("#sign-out").hide();
+    var $dashSignOut = $("#signout-dashboard");
     var $loggedIn = $("#loggedIn").hide();
-    var $response = $("#response");
-    var $login = $("#loginForm").show();
+    var $login = $("#loginForm");
     var $register = $("#regForm").hide();
     var $regError = $('#RegErrorModal');
-    var $CLUI = $("#client-interface").hide();
-    var $COUI = $("#courier-interface").hide();
+    var $dashboard = $('#dashboard').hide();
+    var $dashboardOpen = $("#dashboard-open").hide();
+    var $dashboardClose = $("#dashboard-close").hide();
+
+    // DASHBOARD SETUP
+
+    var $dashboardNavFields = $(".client-dashboard, .courier-dashboard, .admin-dashboard").hide();
+    var $clientDashFields = $(".client-dashboard").hide();
+    var $courierDashFields = $(".courier-dashboard").hide();
+
+
+    // GLOBALS ===============================================================
+    $(document).ajaxSend(function(e, xhr, options) {
+        if(getJwtToken()!==null)
+            xhr.setRequestHeader("Authorization","Bearer " + getJwtToken());
+    });
+
 
     // FUNCTIONS =============================================================
+
     function getJwtToken() {
         return localStorage.getItem(TOKEN_KEY);
     }
@@ -23,6 +39,39 @@ $(function () {
         localStorage.removeItem(TOKEN_KEY);
     }
 
+
+    $dashboardOpen.click(function () {
+        $.ajax({
+            url: "/dashboard",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status === 200) {
+                    $("#initial-frame").hide();
+                    $dashboard.show();
+                    if(jqXHR.responseText==="client") {
+                        $dashboardNavFields.hide();
+                        $clientDashFields.show();
+                    }
+                    if(jqXHR.responseText==="courier"){
+                        $dashboardNavFields.hide();
+                        $courierDashFields.show();
+                    }
+                }
+            }
+        });
+    });
+
+
+    $dashboardClose.click(function () {
+        closeDashboard();
+    });
+    function closeDashboard() {
+        $("#initial-frame").show();
+        $dashboard.hide();
+    }
+
     function doLogin(loginData) {
         $.ajax({
             url: "/auth",
@@ -31,17 +80,17 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                console.log(data);
                 setJwtToken(data.token);
                 $login.hide();
-                $signout.show();
+                $signOut.show();
+                $dashboardOpen.show();
+                $dashboardClose.hide();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
-                    $('#loginErrorModal')
-                        .modal("open")
+                    $('#errorModal')
                         .modal("show")
-                        .find("#loginErrorBody")
+                        .find("#errorBody")
                         .empty()
                         .html("<p>" + jqXHR.responseText + "</p>");
                 } else {
@@ -53,27 +102,24 @@ $(function () {
 
     function doLogout() {
         removeJwtToken();
+        closeDashboard();
         $login.show();
-        $signout.hide();
-    }
-
-    function createAuthorizationTokenHeader() {
-        var token = getJwtToken();
-        if (token) {
-            return {"Authorization": "Bearer " + token};
-        } else {
-            return {};
-        }
+        $signOut.hide();
+        $dashboardOpen.hide();
     }
 
 
-    function showResponse(statusCode, message) {
-        $response
-            .empty()
-            .text("status code: " + statusCode + "\n-------------------------\n" + message);
-    }
-
-
+    $("#adminServiceBtn").click(function () {
+        $.ajax({
+            url: "/protected",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (data, textStatus, jqXHR) {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+            }
+        });
+    });
     $login.submit(function (event) {
         event.preventDefault();
 
@@ -86,7 +132,10 @@ $(function () {
         doLogin(formData);
     });
 
-    $signout.click(doLogout);
+    $signOut.click(doLogout);
+
+    $dashSignOut.click(doLogout);
+
 
     $("#to-reg").click(function () {
         $login.hide();
@@ -98,22 +147,6 @@ $(function () {
         $login.show();
     });
 
-
-    $("#adminServiceBtn").click(function () {
-        $.ajax({
-            url: "/protected",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            headers: createAuthorizationTokenHeader(),
-            success: function (data, textStatus, jqXHR) {
-                showResponse(jqXHR.status, data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                showResponse(jqXHR.status, errorThrown);
-            }
-        });
-    });
-
     $loggedIn.click(function () {
         $loggedIn
             .toggleClass("text-hidden")
@@ -122,12 +155,20 @@ $(function () {
 
     if (getJwtToken()) {
         $login.hide();
-        $signout.show();
+        $signOut.show();
+        $dashboardOpen.show();
     }
 
     $register.submit(function (event) {
         event.preventDefault();
 
+        var typeVal;
+        var type = document.getElementsByName("type");
+        for (var i=0; i<type.length;i++){
+            if (type[i].checked){
+                typeVal = type[i].value;
+            }
+        }
         var $form = $(this);
         var formData = {
             username: $form.find('input[name="username"]').val(),
@@ -135,9 +176,9 @@ $(function () {
             firstName: $form.find('input[name="firstName"]').val(),
             lastName: $form.find('input[name="lastName"]').val(),
             age: $form.find('input[name="age"]').val(),
-            email: $form.find('input[name="email"]').val()
+            email: $form.find('input[name="email"]').val(),
+            type: typeVal
         };
-
         doRegister(formData);
     });
 
@@ -165,6 +206,23 @@ $(function () {
                         .html("<p>" + jqXHR.responseJSON.message + "</p>");
                 }
 
+            }
+        });
+    }
+
+    function redirectToMainDashboard() {
+        $.ajax({
+            url: "../../../",
+            type: "POST",
+            data: JSON.stringify(newOrderToSubmit),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                redirectToMainDashboard();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                //todo
             }
         });
     }

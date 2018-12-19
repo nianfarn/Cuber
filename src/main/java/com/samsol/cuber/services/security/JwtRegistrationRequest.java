@@ -1,5 +1,8 @@
 package com.samsol.cuber.services.security;
 
+import com.samsol.cuber.entities.Authority;
+import com.samsol.cuber.entities.AuthorityName;
+
 import javax.annotation.MatchesPattern;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -8,8 +11,8 @@ import java.io.Serializable;
 
 public class JwtRegistrationRequest implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 7062218458314617034L;
     @Size(min = 6, max = 30)
     @MatchesPattern("[A-Za-z0-9]+")
     private String username;
@@ -24,14 +27,21 @@ public class JwtRegistrationRequest implements Serializable {
     @Size(min = 6, max = 16)
     @MatchesPattern("[A-Za-z0-9]+")
     private String password;
+    private AuthorityName type;
+
+    public AuthorityName getType() {
+        return type;
+    }
+
+    public JwtRegistrationRequest setType(AuthorityName type) {
+        this.type = type;
+        return this;
+    }
 
     public JwtRegistrationRequest() {
     }
 
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getUsername() {
         return username;

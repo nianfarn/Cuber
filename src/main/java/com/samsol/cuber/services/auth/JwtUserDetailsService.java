@@ -1,9 +1,8 @@
 package com.samsol.cuber.services.auth;
 
-import com.samsol.cuber.dto.ClientDto;
-import com.samsol.cuber.services.crud.ClientCRUDService;
-import com.samsol.cuber.services.security.JwtClient;
-import com.samsol.cuber.services.security.JwtClientFactory;
+import com.samsol.cuber.dto.UserDetailsDto;
+import com.samsol.cuber.services.crud.UserDetailsCrudService;
+import com.samsol.cuber.services.security.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,23 +10,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtClientDetailsService implements UserDetailsService {
-
-    private ClientCRUDService clientCRUDService;
+public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
-    public JwtClientDetailsService(ClientCRUDService clientCRUDService) {
-        this.clientCRUDService = clientCRUDService;
-    }
+    private UserDetailsCrudService userDetailsCrudService;
+
+    @Autowired
+    private JwtUserFactory jwtUserFactory;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ClientDto clientDto = clientCRUDService.getClientByUsername(username);
+        UserDetailsDto userDetailsDto = userDetailsCrudService.getUserDetailsByUsername(username);
 
-        if (clientDto == null) {
+        if (userDetailsDto == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
-            return JwtClientFactory.create(clientDto);
+            return jwtUserFactory.create(userDetailsDto);
         }
     }
 }

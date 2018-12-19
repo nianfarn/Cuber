@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Table(name = "Edges")
 public class Edge implements Serializable {
 
+    private static final long serialVersionUID = 8124945105108189935L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;

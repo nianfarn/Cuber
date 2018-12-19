@@ -1,11 +1,14 @@
 package com.samsol.cuber.dto;
 
+import com.samsol.cuber.entities.OrderStatus;
+
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.io.Serializable;
 
-public class DeliveryOrderDto {
+public class DeliveryOrderDto implements Serializable {
 
+    private static final long serialVersionUID = 177830688808608340L;
     private Long id;
     private String productName;
     @Max(value = 800, groups = {New.class, Update.class})
@@ -14,10 +17,10 @@ public class DeliveryOrderDto {
     @Max(value = 800, groups = {New.class, Update.class})
     private Integer volume;
     private Double price;
-    private String status;
+    private OrderStatus status;
     private Long courierId;
-    private Long fromNodeLocationId;
-    private Long toNodeLocationId;
+    private Long fromNodeId;
+    private Long toNodeId;
     private Long clientId;
 
     interface New {
@@ -42,21 +45,21 @@ public class DeliveryOrderDto {
         return this;
     }
 
-    public Long getFromNodeLocationId() {
-        return fromNodeLocationId;
+    public Long getFromNodeId() {
+        return fromNodeId;
     }
 
-    public DeliveryOrderDto setFromNodeLocationId(Long fromNodeLocationId) {
-        this.fromNodeLocationId = fromNodeLocationId;
+    public DeliveryOrderDto setFromNodeId(Long fromNodeId) {
+        this.fromNodeId = fromNodeId;
         return this;
     }
 
-    public Long getToNodeLocationId() {
-        return toNodeLocationId;
+    public Long getToNodeId() {
+        return toNodeId;
     }
 
-    public DeliveryOrderDto setToNodeLocationId(Long toNodeLocationId) {
-        this.toNodeLocationId = toNodeLocationId;
+    public DeliveryOrderDto setToNodeId(Long toNodeId) {
+        this.toNodeId = toNodeId;
         return this;
     }
 
@@ -114,11 +117,11 @@ public class DeliveryOrderDto {
         return this;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public DeliveryOrderDto setStatus(String status) {
+    public DeliveryOrderDto setStatus(OrderStatus status) {
         this.status = status;
         return this;
     }

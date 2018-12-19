@@ -3,6 +3,7 @@ package com.samsol.cuber.services.courier;
 
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.dto.DeliveryOrderDto;
+import com.samsol.cuber.entities.OrderStatus;
 import com.samsol.cuber.services.crud.CourierCRUDService;
 import com.samsol.cuber.services.crud.DeliveryOrderCRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class CourierServiceImpl implements CourierService {
 
     public void confirmArrival(long deliveryOrderId) {
         DeliveryOrderDto orderDto = deliveryOrderCRUDService.getDeliveryOrderById(deliveryOrderId);
-        orderDto.setStatus("Arrived");
+        orderDto.setStatus(OrderStatus.DELIVERED);
         deliveryOrderCRUDService.updateDeliveryOrder(orderDto);
         CourierDto courierDto = courierCRUDService.getCourierById(orderDto.getCourierId());
         courierDto.setReadyToGo(true);
@@ -40,13 +41,22 @@ public class CourierServiceImpl implements CourierService {
 
     }
 
-    public List<DeliveryOrderDto> getCourierOrdersByHisId(Long id) {
+    public List<DeliveryOrderDto> getCourierOrdersByCourierId(Long id) {
         return deliveryOrderCRUDService.getDeliveryOrdersByCourierId(id);
     }
 
     public void inTransit(long deliveryOrderId) {
         DeliveryOrderDto orderDto = deliveryOrderCRUDService.getDeliveryOrderById(deliveryOrderId);
-        orderDto.setStatus("In transit");
+        orderDto.setStatus(OrderStatus.IN_TRANSIT);
         deliveryOrderCRUDService.updateDeliveryOrder(orderDto);
+    }
+
+    @Override
+    public void changeReadyStatus(CourierDto courier) {
+        if(courier.getReadyToGo()) {
+            courier.setReadyToGo(false);
+        } else {
+            courier.setReadyToGo(true);
+        }
     }
 }

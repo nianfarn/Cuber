@@ -1,6 +1,7 @@
 package com.samsol.cuber.services.crud.impl;
 
 import com.samsol.cuber.dto.ClientDto;
+import com.samsol.cuber.dto.UserDetailsDto;
 import com.samsol.cuber.entities.AuthorityName;
 import com.samsol.cuber.entities.Client;
 import com.samsol.cuber.repositories.ClientRepository;
@@ -23,9 +24,6 @@ public class ClientCRUDServiceImpl implements ClientCRUDService {
     private ClientRepository clientRepository;
     private ConverterService<Client, ClientDto> converter;
 
-    @Value("${spring.security.BCryptEncoderStrength}")
-    private int rounds;
-
     @Autowired
     public ClientCRUDServiceImpl(ClientRepository clientRepository, ConverterService<Client, ClientDto> converter) {
         this.clientRepository = clientRepository;
@@ -36,7 +34,7 @@ public class ClientCRUDServiceImpl implements ClientCRUDService {
             clientRepository.save(converter.convertToEntity(clientDto));
     }
 
-    public void updateClient(ClientDto clientDto) {
+    public void updateClient(@Valid ClientDto clientDto) {
             clientRepository.save(converter.convertToEntity(clientDto));
     }
 
@@ -57,23 +55,10 @@ public class ClientCRUDServiceImpl implements ClientCRUDService {
         return converter.convertToDtoList((List<Client>) clientRepository.findAll());
     }
 
-    public ClientDto getClientByUsername(String username) {
-        return converter.convertToDto(clientRepository.findByUsername(username));
+    @Override
+    public ClientDto getClientByUserDetailsId(Long id) {
+        return converter.convertToDto(clientRepository.findByClientDetailsId(id));
     }
 
-    @Override
-    public ClientDto generateNewClient(JwtRegistrationRequest registrationRequest) {
-        ClientDto clientDto = new ClientDto();
-        clientDto.setUsername(registrationRequest.getUsername());
-        clientDto.setFirstName(registrationRequest.getFirstName());
-        clientDto.setLastName(registrationRequest.getLastName());
-        clientDto.setEmail(registrationRequest.getEmail());
-        clientDto.setAge(registrationRequest.getAge());
-        clientDto.setPassword(BCrypt.hashpw(registrationRequest.getPassword(),BCrypt.gensalt(rounds)));
-        clientDto.setAuthorityName(AuthorityName.ROLE_CLIENT);
-        clientDto.setEnabled(true);
-        clientDto.setLastPasswordResetDate(new Date());
-        return clientDto;
-    }
 
 }

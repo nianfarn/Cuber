@@ -12,17 +12,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "AUTHORITY")
-public class Authority {
+public class Authority implements Serializable{
 
+    private static final long serialVersionUID = -7660043734683733823L;
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authority_seq")
     @SequenceGenerator(name = "authority_seq", sequenceName = "authority_seq", allocationSize = 1)
-    private Long id;
+    private int id;
 
     @Column(name = "NAME", length = 50)
     @NotNull
@@ -30,13 +32,13 @@ public class Authority {
     private AuthorityName name;
 
     @OneToMany(mappedBy = "authority", fetch = FetchType.LAZY)
-    private List<Client> clients;
+    private List<UserDetails> userDetails;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public Authority setId(Long id) {
+    public Authority setId(int id) {
         this.id = id;
         return this;
     }
@@ -50,12 +52,12 @@ public class Authority {
         return this;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public List<UserDetails> getUserDetails() {
+        return userDetails;
     }
 
-    public Authority setClients(List<Client> clients) {
-        this.clients = clients;
+    public Authority setUserDetails(List<UserDetails> userDetails) {
+        this.userDetails = userDetails;
         return this;
     }
 }

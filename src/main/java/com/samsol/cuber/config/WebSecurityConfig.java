@@ -1,6 +1,6 @@
 package com.samsol.cuber.config;
 
-import com.samsol.cuber.services.auth.JwtClientDetailsService;
+import com.samsol.cuber.services.auth.JwtUserDetailsService;
 import com.samsol.cuber.services.security.JwtAuthenticationEntryPoint;
 import com.samsol.cuber.services.security.JwtAuthorizationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    private JwtClientDetailsService jwtClientDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
     @Autowired
     JwtAuthorizationTokenFilter authenticationTokenFilter;
@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(jwtClientDetailsService)
+                .userDetailsService(jwtUserDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
     }
 
@@ -64,24 +64,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // we don't need CSRF because our token is invulnerable
                 .csrf().disable()
 
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
-                // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
 
                 .antMatchers("/h2-console/**/**").permitAll()
 
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/reg/**").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // disable page caching
         httpSecurity
                 .headers()
                 .frameOptions().sameOrigin()
@@ -97,8 +95,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         authenticationPath
                 )
                 .antMatchers("/*")
-
-                // allow anonymous resource requests
                 .and()
                 .ignoring()
                 .antMatchers(
@@ -110,11 +106,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js",
                         "/**/*.png"
-                )
-
-                // Un-secure H2 Database for testing purposes
-                .and()
-                .ignoring()
-                .antMatchers("/h2-console/**/**");
+                );
     }
 }

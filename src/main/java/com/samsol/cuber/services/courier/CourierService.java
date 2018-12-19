@@ -6,7 +6,7 @@ import com.samsol.cuber.dto.DeliveryOrderDto;
 import java.util.List;
 
 public interface CourierService {
-    List<DeliveryOrderDto> getCourierOrdersByHisId(Long id);
+    List<DeliveryOrderDto> getCourierOrdersByCourierId(Long id);
 
     CourierDto getCourierById(long id);
 
@@ -14,4 +14,6 @@ public interface CourierService {
 
     void confirmArrival(long deliveryOrderId);
     void inTransit(long deliveryOrderId);
+
+    void changeReadyStatus(CourierDto courier);
 }

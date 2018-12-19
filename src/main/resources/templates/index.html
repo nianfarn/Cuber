@@ -16,22 +16,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script th:src="@{/js/signUpCheck.js}" ></script>
-    <script th:src="@{/js/auth.js}" ></script>
+    <script th:src="@{/js/index.js}" ></script>
+    <script th:src="@{/js/dashboard.js}" ></script>
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/ui.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 </head>
 <body>
+<div id="initial-frame">
 <!-- header -->
-    <section class="w3layouts-header py-2">
+    <section class="py-2 main-page-header">
         <div class="container">
               <!-- header -->
         <header>
                 <nav class="navbar navbar-expand-lg navbar-light bg-gradient-secondary">
 
                     <h1>
-                        <a class="navbar-brand" href="/" id="headerCuber">
-                          CUBER
-                        </a>
+                        <a class="navbar-brand" href="/" id="headerCuber">CUBER</a>
                     </h1>
                     <button class="navbar-toggler ml-md-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -52,10 +54,11 @@
                                 <a class="nav-link" href="services.html">Services</a>
                             </li>
                             <li class="nav-item mr-3">
-                                <a class="nav-link" href="contact.html">contact</a>
+                                <a class="nav-link pointer" id="dashboard-open">Open Dashboard</a>
                             </li>
+
                             <li class="nav-item mr-3">
-                                <button type="button" class="btn btn-secondary" id="sign-out">SignOut</button>
+                                <button type="button" class="btn btn-secondary pointer" id="sign-out">SignOut</button>
                             </li>
                         </ul>
                     </div>
@@ -67,7 +70,7 @@
     </section>
 <!-- //header -->
 <!-- banner -->
-    <section class="banner-main-picture">
+    <section class="main-body">
         <div class="main-picture">
             <img id="main-picture" class="container-fluid" th:src="@{images/main-picture.png}">
         </div>
@@ -100,6 +103,9 @@
                     </form>
                     <form id="regForm">
                         <fieldset>
+                        <label class="radio-inline"><input type="radio" name="type" value="ROLE_COURIER">Courier</label>
+                        <label class="radio-inline"><input type="radio" name="type" value="ROLE_CLIENT">Client</label>
+
                         <div class="reg-form-group">
                             <label for="username"><span class="req">* </span> Enter username: </label>
                                 <input required class="form-control" type="text" minlength="6" maxlength=" 32" name="username" id = "username" onkeyup = "validateUsername(this)" placeholder="minimum 6 letters" />
@@ -131,12 +137,12 @@
                                 <label for="pass1"></label><input required name="password" type="password" class="form-control inputpass" minlength="6"  maxlength="16"  id="pass1" onchange="checkPass(); return false;" />
 
                             <label for="password"><span class="req">* </span> Confirm Password: </label>
-                                <input required name="password" type="password" class="form-control inputpass" minlength="6" maxlength="16" placeholder="Enter again to validate"  id="pass2" onkeyup="checkPass(); return false;" />
+                                <input required name="password" type="password" class="form-control inputpass" minlength="6" maxlength="16" placeholder="Enter again"  id="pass2" onkeyup="checkPass(); return false;" />
                                     <span id="confirmMessage" class="confirmMessage"></span>
                         </div>
 
                         <div class="form-group">
-                            <input formmethod="post" class="btn btn-success" type="submit" name="submit_reg" value="Register" >
+                            <input formmethod="post" class="btn btn-success" type="submit" name="submit_reg" value="Register" id="testId"/>
                             <span>or</span>
                             <button type="button" class="btn btn-primary" id="to-log">SignIn</button>
                         </div>
@@ -148,8 +154,130 @@
     </section>
 <!-- //banner bottom -->
 <!-- modals-->
-<div id="loginErrorModal" class="modal">
-  <div id="loginErrorBody"></div>
+</div>
+<div id="dashboard">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <h3 class="navbar-brand col-sm-3 col-md-2 mr-0">Cuber</h3>
+      <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link pointer" id="signout-dashboard">Sign out</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item client-dashboard">
+                <a class="nav-link pointer" id="new-order">
+                  <span data-feather="file"></span>
+                  Add New Order
+                </a>
+              </li>
+              <li class="nav-item client-dashboard">
+                <a class="nav-link pointer" id="show-all-client-orders">
+                  <span data-feather="shopping-cart"></span>
+                  Show My Orders
+                </a>
+              </li>
+              <li class="nav-item courier-dashboard">
+                <a class="nav-link pointer" id="show-all-courier-orders">
+                  <span data-feather="users"></span>
+                  Show My Orders
+                </a>
+              </li>
+              <li class="nav-item courier-dashboard">
+                <a class="nav-link pointer" id="status-management">
+                  <span data-feather="bar-chart-2"></span>
+                  Status Management
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" id="dashboard-body" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="dashboard-fields">
+                <div class="client-field new-order">
+                <h2 id="new-order-title">New Order Form</h2>
+                <h3 class="new-order-successful">Order successfully added</h3>
+                <h3 class="new-order-failure">Not valid data!</h3>
+                <form id="new-order-form">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="productName"> Enter Product Name: </label>
+                                <input required class="form-control" type="text" minlength="6" maxlength=" 32" name="productName" id = "productName" placeholder="minimum 6 letters" />
+                        </div>
+                        <div class="form-group">
+                            <label for="weight"> Enter weight: </label>
+                                <input required class="form-control" type="number" max="800" name="weight" id = "weight" placeholder="max 800" />
+                        </div>
+                        <div class="form-group">
+                            <label for="volume"> Enter volume: </label>
+                                <input required class="form-control" type="number" max="800" name="volume" id = "volume" placeholder="max 700" />
+                        </div>
+                        <div class="form-group">
+                            <label for="fromNodeId"> Enter from Id: </label>
+                                <input required class="form-control" type="number" name="fromNodeId" id = "fromNodeId"  />
+                        </div>
+                        <div class="form-group">
+                            <label for="toNodeId"> Enter to Id: </label>
+                                <input required class="form-control" type="number" name="toNodeId" id = "toNodeId" />
+                        </div>
+                        <div class="form-group">
+                            <label for="price"> Calculated price: </label>
+                                <input required class="form-control" type="number" name="price" id = "price" disabled="disabled" />
+                        </div>
+                        <div class="form-group">
+                            <input formmethod="post" class="btn btn-success" type="submit" name="submit-new-order" value="Create" id="submit-new-order" disabled/>
+                            <button class="btn btn-primary" type="button" id="calculate-price">Calculate Price</button>
+
+                        </div>
+                    </fieldset>
+
+                </form>
+                </div>
+                <div class="client-field show-all-client-orders">
+                    <table class="tg" id="show-all-client-orders-table"></table>
+                </div>
+                <div class="client-field show-all-courier-orders">
+                    <table class="tg" id="show-all-courier-orders-table"></table>
+                </div>
+                <div class="client-field status-management">
+                    <div class="ready-to-go div">
+                        <h3>Status</h3>
+                        <div class="toggle">
+                            <input type="radio" name="status" value="ready" id="ready-to-go-radio" />
+                            <label for="ready-to-go-radio">Ready</label>
+                            <input type="radio" name="status" value="notReady" id="not-ready-radio" />
+                            <label for="not-ready-radio">Not ready</label>
+                        </div>
+                    </div>
+                    <div class="current-node div">
+                    <h3>Current Node Setup</h3>
+                        <form id="current-node-form">
+                            <div class="form-group">
+                                <label for="currentNodeId"> Current Node Id</label>
+                                <input required class="small-width" type="number" name="currentNodeId" id="currentNodeId">
+                            </div>
+                            <div class="form-group">
+                                <input formmethod="post" class="btn btn-primary" type="submit" name="submit-current-node-id" value="Confirm" id="submit-current-node-id"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+      </div>
+    </div>
+</div>
+
+<div id="errorModal" class="modal">
+  <div id="errorBody"></div>
 </div>
 <div id="succRegModal" class="modal">
   <div id="succRegBody"></div>
@@ -157,8 +285,6 @@
 <div id="RegErrorModal" class="modal">
   <div id="RegErrorBody"></div>
 </div>
-
-
 
 </body>
 </html>

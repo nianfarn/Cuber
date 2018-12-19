@@ -1,7 +1,10 @@
 package com.samsol.cuber.dto;
 
-public class NodeDto {
+import java.io.Serializable;
 
+public class NodeDto implements Serializable {
+
+    private static final long serialVersionUID = -2318719875701604768L;
     private Long id;
     private String address;
     private String description;

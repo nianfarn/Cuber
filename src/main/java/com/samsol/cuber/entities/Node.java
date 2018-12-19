@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "Nodes")
 public class Node implements Serializable {
 
+    private static final long serialVersionUID = 2187278121664191941L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;

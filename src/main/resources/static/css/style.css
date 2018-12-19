@@ -70,10 +70,6 @@ input[type="submit"],
     -o-transition: .5s ease-in-out;
 }
 
-.w3layouts-header {
-    background: #ffdc39;
-}
-
 .navbar-light .navbar-brand {
     color: #000;
 }

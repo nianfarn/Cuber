@@ -1,9 +1,11 @@
 package com.samsol.cuber.dto;
 
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 
-public class EdgeDto {
+public class EdgeDto implements Serializable {
 
+    private static final long serialVersionUID = 2869245403286295234L;
     private Long id;
     @Positive
     private Double length;

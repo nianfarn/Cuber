@@ -43,7 +43,7 @@ public class MapServiceImpl implements MapService {
 
         for (CourierDto c : listCouriers) {
             long courierNodeId = c.getCurrentNodeId();
-            long orderFromId = deliveryOrderDto.getFromNodeLocationId();
+            long orderFromId = deliveryOrderDto.getFromNodeId();
 
             Double length = calculateLength(courierNodeId, orderFromId);
 

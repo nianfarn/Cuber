@@ -1,6 +1,8 @@
 package com.samsol.cuber.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,11 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "DeliveryOrders")
 public class DeliveryOrder implements Serializable {
+    private static final long serialVersionUID = -3660020369507722627L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -37,8 +41,9 @@ public class DeliveryOrder implements Serializable {
     @JoinColumn(name = "toNodeLocation_ID")
     private Node toNodeLocation;
 
-    @Column
-    private String status;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "CURRENTNODE_ID")
@@ -115,11 +120,11 @@ public class DeliveryOrder implements Serializable {
         return this;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public DeliveryOrder setStatus(String status) {
+    public DeliveryOrder setStatus(OrderStatus status) {
         this.status = status;
         return this;
     }

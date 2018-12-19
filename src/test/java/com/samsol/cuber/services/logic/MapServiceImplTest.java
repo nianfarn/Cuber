@@ -33,7 +33,7 @@ public class MapServiceImplTest {
     @Test
     public void shouldFindClosestCourier() {
         DeliveryOrderDto deliveryOrder = new DeliveryOrderDto();
-        deliveryOrder.setFromNodeLocationId(3L);
+        deliveryOrder.setFromNodeId(3L);
         CourierDto closestCourier = mapService.findClosestCourier(deliveryOrder);
 
         assertThat(closestCourier.getId()).isEqualTo(2L);

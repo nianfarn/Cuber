@@ -1,18 +1,23 @@
 package com.samsol.cuber.services.client;
 
 
-import com.samsol.cuber.controllers.client.requests.NewOrderRequest;
+import com.samsol.cuber.controllers.requests.NewOrderRequest;
 import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.dto.DeliveryOrderDto;
 import com.samsol.cuber.entities.OrderStatus;
-import com.samsol.cuber.services.crud.ClientCRUDService;
-import com.samsol.cuber.services.crud.DeliveryOrderCRUDService;
+import com.samsol.cuber.services.crud.ClientCrudService;
+import com.samsol.cuber.services.crud.DeliveryOrderCrudService;
+import com.samsol.cuber.services.crud.NodeCrudService;
 import com.samsol.cuber.services.logic.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -20,22 +25,26 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private MapService mapService;
     @Autowired
-    private DeliveryOrderCRUDService deliveryOrderCRUDService;
+    private DeliveryOrderCrudService deliveryOrderCRUDService;
     @Autowired
-    private ClientCRUDService clientCrudService;
+    private ClientCrudService clientCrudService;
+    @Autowired
+    private NodeCrudService nodeCrudService;
 
     public List<DeliveryOrderDto> getClientOrdersByHisId(Long id) {
         return deliveryOrderCRUDService.getDeliveryOrdersByClientId(id);
     }
+
 
     public CourierDto calculateDeliveryCourier(DeliveryOrderDto orderDto) {
         return mapService.findClosestCourier(orderDto);
     }
 
     @Override
-    public DeliveryOrderDto generateNewOrder(NewOrderRequest request) {
-        long fromId = request.getFromNodeId();
-        long toId = request.getToNodeId();
+    public DeliveryOrderDto generateNewOrder(NewOrderRequest request, String locale) {
+
+        Long fromId = nodeCrudService.getNodeDtoByHisLocaleAddress(request.getFromNode(),locale).getId();
+        Long toId = nodeCrudService.getNodeDtoByHisLocaleAddress(request.getToNode(),locale).getId();
         DeliveryOrderDto deliveryOrderDto = new DeliveryOrderDto();
         deliveryOrderDto.setId(0L);
         deliveryOrderDto.setProductName(request.getProductName());

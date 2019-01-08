@@ -4,7 +4,7 @@ import com.samsol.cuber.dto.DeliveryOrderDto;
 
 import java.util.List;
 
-public interface DeliveryOrderCRUDService {
+public interface DeliveryOrderCrudService {
     void addDeliveryOrder(DeliveryOrderDto deliveryOrderDto);
 
     void updateDeliveryOrder(DeliveryOrderDto deliveryOrderDto);

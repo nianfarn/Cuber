@@ -5,6 +5,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.assertj.core.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,7 +30,7 @@ public class JwtTokenUtilTest {
     private JwtTokenUtil jwtTokenUtil;
 
     @Before
-    public void init() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         ReflectionTestUtils.setField(jwtTokenUtil, "expiration", 3600L); // one hour

@@ -5,6 +5,7 @@ $(function () {
     var $dashSignOut = $("#signout-dashboard");
     var $loggedIn = $("#loggedIn").hide();
     var $login = $("#loginForm");
+    var $quickOrderManagement = $("#quick-order-management").hide();
     var $register = $("#regForm").hide();
     var $regError = $('#RegErrorModal');
     var $dashboard = $('#dashboard').hide();
@@ -40,7 +41,7 @@ $(function () {
     }
 
 
-    $dashboardOpen.click(function () {
+    function openDashboard() {
         $.ajax({
             url: "/dashboard",
             type: "GET",
@@ -61,6 +62,10 @@ $(function () {
                 }
             }
         });
+    }
+
+    $dashboardOpen.click(function () {
+        openDashboard();
     });
 
 
@@ -70,6 +75,50 @@ $(function () {
     function closeDashboard() {
         $("#initial-frame").show();
         $dashboard.hide();
+
+    }
+
+    function generateQuickOrderManagementImage(ordersData) {
+        $("#orders-div-select-list").html("");
+        $("#order-management-div").html("");
+        function showOrderManagementInfo(orderData) {
+            console.log(orderData);
+            $(".order-management-div").html("");
+            for (var key in orderData) {
+                console.log(key);
+            }
+        }
+
+        for (var i=0; i<ordersData.length-1; i++){
+            var id = ordersData[i]['Идентификатор'] || ordersData[i]['Id'];
+            var productName = ordersData[i]['Имя товара'] || ordersData[i]['Product Name'];
+            var role = ordersData[ordersData.length-1]["role"];
+
+            //orders nav
+            var aElem = productName +"(#"+id+")";
+            $('#orders-div-select-list')
+                .append($('<li/>')
+                .append($('<a/>')
+                    .html(aElem))
+            );
+            $('#orders-div-select-list li a')
+        }
+    }
+
+    function getQuickOrderManagementData() {
+        $.ajax({
+            url: "/frontWindow/ordersData",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (ordersData) {
+                generateQuickOrderManagementImage(ordersData);
+            }
+        });
+    }
+
+    function openQuickOrderManagement() {
+        getQuickOrderManagementData();
+        $quickOrderManagement.show();
     }
 
     function doLogin(loginData) {
@@ -85,6 +134,7 @@ $(function () {
                 $signOut.show();
                 $dashboardOpen.show();
                 $dashboardClose.hide();
+                openQuickOrderManagement();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status === 401 || jqXHR.status === 403) {
@@ -100,12 +150,17 @@ $(function () {
         });
     }
 
+    function closeQuickOrderManagement() {
+        $quickOrderManagement.hide();
+    }
+
     function doLogout() {
         removeJwtToken();
         closeDashboard();
         $login.show();
         $signOut.hide();
         $dashboardOpen.hide();
+        closeQuickOrderManagement();
     }
 
 
@@ -210,20 +265,5 @@ $(function () {
         });
     }
 
-    function redirectToMainDashboard() {
-        $.ajax({
-            url: "../../../",
-            type: "POST",
-            data: JSON.stringify(newOrderToSubmit),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                redirectToMainDashboard();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                //todo
-            }
-        });
-    }
+
 });

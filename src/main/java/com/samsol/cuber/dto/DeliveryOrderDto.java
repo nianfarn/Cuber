@@ -11,10 +11,7 @@ public class DeliveryOrderDto implements Serializable {
     private static final long serialVersionUID = 177830688808608340L;
     private Long id;
     private String productName;
-    @Max(value = 800, groups = {New.class, Update.class})
     private Integer weight;
-    @Null(groups = {Delete.class})
-    @Max(value = 800, groups = {New.class, Update.class})
     private Integer volume;
     private Double price;
     private OrderStatus status;
@@ -22,18 +19,6 @@ public class DeliveryOrderDto implements Serializable {
     private Long fromNodeId;
     private Long toNodeId;
     private Long clientId;
-
-    interface New {
-    }
-
-    interface Exist {
-    }
-
-    interface Update extends Exist {
-    }
-
-    interface Delete extends Exist {
-    }
 
 
     public Long getClientId() {

@@ -14,19 +14,11 @@ public class UserDetailsDto implements Serializable {
 
     private static final long serialVersionUID = -8451024127751891614L;
     private Long id;
-    @Size(min = 6, max = 30)
-    @MatchesPattern("[A-Za-z0-9]+")
     private String username;
-    @MatchesPattern("[a-zA-Z]+")
     private String firstName;
-    @MatchesPattern("[a-zA-Z]+")
     private String lastName;
-    @Email
     private String email;
-    @Min(value = 18)
     private Integer age;
-    @Size(min = 6, max = 16)
-    @MatchesPattern("[A-Za-z0-9]+")
     private String password;
     private AuthorityName authorityName;
     private Boolean enabled;

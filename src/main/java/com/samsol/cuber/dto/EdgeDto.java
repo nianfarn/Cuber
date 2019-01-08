@@ -7,22 +7,9 @@ public class EdgeDto implements Serializable {
 
     private static final long serialVersionUID = 2869245403286295234L;
     private Long id;
-    @Positive
     private Double length;
     private Long toNodeId;
     private Long fromNodeId;
-
-    interface New {
-    }
-
-    interface Exist {
-    }
-
-    interface UpdateLength extends Exist {
-    }
-
-    interface Update extends Exist {
-    }
 
     public Long getFromNodeId() {
         return fromNodeId;

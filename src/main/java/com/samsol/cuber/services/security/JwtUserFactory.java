@@ -1,11 +1,7 @@
 package com.samsol.cuber.services.security;
 
-import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.UserDetailsDto;
 import com.samsol.cuber.entities.AuthorityName;
-import com.samsol.cuber.entities.UserDetails;
-import com.samsol.cuber.services.crud.AuthorityCrudService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -16,9 +12,6 @@ import java.util.stream.Collectors;
 
 @Component
 public final class JwtUserFactory {
-
-    @Autowired
-    private AuthorityCrudService authorityCrudService;
 
     private JwtUserFactory() {
     }

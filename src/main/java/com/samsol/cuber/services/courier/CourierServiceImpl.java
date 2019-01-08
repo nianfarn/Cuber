@@ -4,24 +4,26 @@ package com.samsol.cuber.services.courier;
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.dto.DeliveryOrderDto;
 import com.samsol.cuber.entities.OrderStatus;
-import com.samsol.cuber.services.crud.CourierCRUDService;
-import com.samsol.cuber.services.crud.DeliveryOrderCRUDService;
+import com.samsol.cuber.services.crud.CourierCrudService;
+import com.samsol.cuber.services.crud.DeliveryOrderCrudService;
+import com.samsol.cuber.services.crud.NodeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CourierServiceImpl implements CourierService {
 
-    private CourierCRUDService courierCRUDService;
-    private DeliveryOrderCRUDService deliveryOrderCRUDService;
-
     @Autowired
-    public CourierServiceImpl(CourierCRUDService courierCRUDService, DeliveryOrderCRUDService deliveryOrderCRUDService) {
-        this.courierCRUDService = courierCRUDService;
-        this.deliveryOrderCRUDService = deliveryOrderCRUDService;
-    }
+    private CourierCrudService courierCRUDService;
+    @Autowired
+    private DeliveryOrderCrudService deliveryOrderCRUDService;
+    @Autowired
+    private NodeCrudService nodeCrudService;
 
     public CourierDto getCourierById(long id) {
         return courierCRUDService.getCourierById(id);
@@ -41,7 +43,7 @@ public class CourierServiceImpl implements CourierService {
 
     }
 
-    public List<DeliveryOrderDto> getCourierOrdersByCourierId(Long id) {
+    public List<DeliveryOrderDto> getCourierOrdersByHisId(Long id) {
         return deliveryOrderCRUDService.getDeliveryOrdersByCourierId(id);
     }
 

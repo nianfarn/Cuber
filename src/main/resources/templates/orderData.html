@@ -12,16 +12,20 @@
 
 </head>
 <body>
-    <p th:text="'Product : '+${order.productName}" ></p>
-    <p th:text="'Weight : '+${order.weight}" ></p>
-    <p th:text="'Volume : '+${order.volume}" ></p>
-    <p th:text="'From : '+${order.fromNodeLocation.address}" ></p>
-    <p th:text="'To : '+${order.toNodeLocation.address}" ></p>
-    <p th:text="'Price : '+${order.price}" ></p>
-    <p th:text="'Status : '+${order.status.status}" ></p>
-    <form action="#" th:action="@{/confirmNewOrderAdding}" th:object="${order}" method="POST">
-        <input type="submit" value="Submit"/>
-    </form>
+    <div th:fragment="showAllOrdersTable" class="tg" id="show-all-client-orders-table">
+        <table>
+            <thead>
+                <tr>
+                    <th th:text="#{responseList.id}">Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${responseList}">
+                    <td th:text="${order.id}">id</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 <script type="text/javascript"
         src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>

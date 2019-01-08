@@ -4,36 +4,31 @@ import com.samsol.cuber.dto.DeliveryOrderDto;
 import com.samsol.cuber.entities.DeliveryOrder;
 import com.samsol.cuber.repositories.DeliveryOrderRepository;
 import com.samsol.cuber.services.converters.ConverterService;
-import com.samsol.cuber.services.crud.DeliveryOrderCRUDService;
+import com.samsol.cuber.services.crud.DeliveryOrderCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
-public class DeliveryOrderCRUDServiceImpl implements DeliveryOrderCRUDService {
+public class DeliveryOrderCrudServiceImpl implements DeliveryOrderCrudService {
 
     private DeliveryOrderRepository deliveryOrderRepository;
     private ConverterService<DeliveryOrder, DeliveryOrderDto> converter;
 
     @Autowired
-    public DeliveryOrderCRUDServiceImpl(DeliveryOrderRepository deliveryOrderRepository, ConverterService<DeliveryOrder, DeliveryOrderDto> converter) {
+    public DeliveryOrderCrudServiceImpl(DeliveryOrderRepository deliveryOrderRepository, ConverterService<DeliveryOrder, DeliveryOrderDto> converter) {
         this.deliveryOrderRepository = deliveryOrderRepository;
         this.converter = converter;
     }
 
-    public void addDeliveryOrder(DeliveryOrderDto deliveryOrderDto) {
-        if (deliveryOrderRepository.existsById(deliveryOrderDto.getId()))
-            System.out.println(("Delivery order already exist"));//fixme
-        else
-            deliveryOrderRepository.save(converter.convertToEntity(deliveryOrderDto));
+    public void addDeliveryOrder(@Valid DeliveryOrderDto deliveryOrderDto) {
+        deliveryOrderRepository.save(converter.convertToEntity(deliveryOrderDto));
     }
 
-    public void updateDeliveryOrder(DeliveryOrderDto deliveryOrderDto) {
-        if (!deliveryOrderRepository.existsById(deliveryOrderDto.getId()))
-            System.out.println("This delivery order is not exist! \nCreated"); //fixme
-        else
-            deliveryOrderRepository.save(converter.convertToEntity(deliveryOrderDto));
+    public void updateDeliveryOrder(@Valid DeliveryOrderDto deliveryOrderDto) {
+        deliveryOrderRepository.save(converter.convertToEntity(deliveryOrderDto));
     }
 
     @Override

@@ -3,11 +3,11 @@ package com.samsol.cuber.services.logic;
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.dto.DeliveryOrderDto;
 import com.samsol.cuber.dto.EdgeDto;
-import com.samsol.cuber.services.crud.CourierCRUDService;
-import com.samsol.cuber.services.crud.EdgeCRUDService;
-import com.samsol.cuber.services.crud.NodeCRUDService;
-import com.samsol.cuber.services.logic.tools.GraphForMapService;
-import com.samsol.cuber.services.logic.tools.NodeForMapService;
+import com.samsol.cuber.services.crud.CourierCrudService;
+import com.samsol.cuber.services.crud.EdgeCrudService;
+import com.samsol.cuber.services.crud.NodeCrudService;
+import com.samsol.cuber.services.logic.helpers.GraphForMapService;
+import com.samsol.cuber.services.logic.helpers.NodeForMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +25,12 @@ public class MapServiceImpl implements MapService {
 
     private static final Double PRICE_MULTIPLIER = 3.4;
 
-    private final NodeCRUDService nodeCRUDService;
-    private final EdgeCRUDService edgeCRUDService;
-    private final CourierCRUDService courierCRUDService;
+    private final NodeCrudService nodeCRUDService;
+    private final EdgeCrudService edgeCRUDService;
+    private final CourierCrudService courierCRUDService;
 
     @Autowired
-    public MapServiceImpl(NodeCRUDService nodeCRUDService, EdgeCRUDService edgeCRUDService, CourierCRUDService courierCRUDService) {
+    public MapServiceImpl(NodeCrudService nodeCRUDService, EdgeCrudService edgeCRUDService, CourierCrudService courierCRUDService) {
         this.nodeCRUDService = nodeCRUDService;
         this.edgeCRUDService = edgeCRUDService;
         this.courierCRUDService = courierCRUDService;
@@ -121,7 +121,7 @@ public class MapServiceImpl implements MapService {
         while (!queue.isEmpty()) {
             Long nodeId = queue.poll();
             NodeForMapService node = graph.getNodeById(nodeId);
-            List<EdgeDto> nodeAdj = edgeCRUDService.getAllEdgesFromNode(nodeCRUDService.getNodeEntityById(nodeId));
+            List<EdgeDto> nodeAdj = edgeCRUDService.getAllEdgesFromNode(nodeCRUDService.getNodeById(nodeId));
             for (EdgeDto edge : nodeAdj) {
                 Long toNodeId = edge.getToNodeId();
 

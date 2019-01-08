@@ -1,31 +1,25 @@
 package com.samsol.cuber.services.crud.impl;
 
 import com.samsol.cuber.dto.ClientDto;
-import com.samsol.cuber.dto.UserDetailsDto;
-import com.samsol.cuber.entities.AuthorityName;
 import com.samsol.cuber.entities.Client;
 import com.samsol.cuber.repositories.ClientRepository;
 import com.samsol.cuber.services.converters.ConverterService;
-import com.samsol.cuber.services.crud.ClientCRUDService;
-import com.samsol.cuber.services.security.JwtRegistrationRequest;
+import com.samsol.cuber.services.crud.ClientCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class ClientCRUDServiceImpl implements ClientCRUDService {
+public class ClientCrudServiceImpl implements ClientCrudService {
 
     private ClientRepository clientRepository;
     private ConverterService<Client, ClientDto> converter;
 
     @Autowired
-    public ClientCRUDServiceImpl(ClientRepository clientRepository, ConverterService<Client, ClientDto> converter) {
+    public ClientCrudServiceImpl(ClientRepository clientRepository, ConverterService<Client, ClientDto> converter) {
         this.clientRepository = clientRepository;
         this.converter = converter;
     }
@@ -35,7 +29,7 @@ public class ClientCRUDServiceImpl implements ClientCRUDService {
     }
 
     public void updateClient(@Valid ClientDto clientDto) {
-            clientRepository.save(converter.convertToEntity(clientDto));
+        clientRepository.save(converter.convertToEntity(clientDto));
     }
 
     public void removeClientById(long id) {

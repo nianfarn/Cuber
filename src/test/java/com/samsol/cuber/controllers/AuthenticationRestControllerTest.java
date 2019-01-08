@@ -1,11 +1,10 @@
 package com.samsol.cuber.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.UserDetailsDto;
 import com.samsol.cuber.entities.AuthorityName;
-import com.samsol.cuber.services.auth.JwtUserDetailsService;
-import com.samsol.cuber.services.security.JwtAuthenticationRequest;
+import com.samsol.cuber.services.security.JwtUserDetailsService;
+import com.samsol.cuber.controllers.requests.JwtAuthenticationRequest;
 import com.samsol.cuber.services.security.JwtUser;
 import com.samsol.cuber.services.security.JwtUserFactory;
 import com.samsol.cuber.services.security.JwtTokenUtil;
@@ -74,7 +73,7 @@ public class AuthenticationRestControllerTest {
 
     @Test
     @WithMockUser(roles = "CLIENT")
-    public void successfulRefreshTokenWithUserRole() throws Exception {
+    public void successfulRefreshTokenWithClientRole() throws Exception {
         UserDetailsDto userDetailsDto = new UserDetailsDto();
         userDetailsDto.setUsername("username");
         userDetailsDto.setAuthorityName(AuthorityName.ROLE_CLIENT);
@@ -92,14 +91,5 @@ public class AuthenticationRestControllerTest {
         mvc.perform(get("/refresh")
                 .header("Authorization", "Bearer 5d1103e-b3e1-4ae9-b606-46c9c1bc915a"))
                 .andExpect(status().is2xxSuccessful());
-    }
-
-
-    @Test
-    @WithAnonymousUser
-    public void shouldGetUnauthorizedWithAnonymousUser() throws Exception {
-
-        mvc.perform(get("/refresh"))
-                .andExpect(status().isUnauthorized());
     }
 }

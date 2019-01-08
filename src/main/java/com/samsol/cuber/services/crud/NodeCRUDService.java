@@ -4,14 +4,16 @@ import com.samsol.cuber.dto.NodeDto;
 
 import java.util.List;
 
-public interface NodeCRUDService {
-    void addNodeEntity(NodeDto nodeDto);
+public interface NodeCrudService {
+    void addNode(NodeDto nodeDto);
 
-    void updateNodeEntity(NodeDto nodeDto);
+    void updateNode(NodeDto nodeDto);
 
-    void removeNodeEntityById(long id);
+    void removeNodeById(long id);
 
-    NodeDto getNodeEntityById(long id);
+    NodeDto getNodeById(long id);
 
     List<NodeDto> getAllNodes();
+    
+    NodeDto getNodeDtoByHisLocaleAddress(String address, String locale);
 }

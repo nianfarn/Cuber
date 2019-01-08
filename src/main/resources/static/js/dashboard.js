@@ -1,16 +1,17 @@
 $(function () {
     // VARIABLES =================================================================
-
     var $newOrderForm = $("#new-order-form");
     var $calculatePrice = $("#calculate-price");
     $(".client-field").hide();
 
     // GLOBALS ===================================================================
     var TOKEN_KEY = "jwtToken";
+    var LOCALE_KEY="locale";
 
-    $(document).ajaxSend(function(e, xhr, options) {
+    $(document).ajaxSend(function(e, xhr) {
         if(getJwtToken()!==null)
             xhr.setRequestHeader("Authorization","Bearer " + getJwtToken());
+            xhr.setRequestHeader("Locale", getLocale());
     });
 
     function getJwtToken() {
@@ -18,6 +19,32 @@ $(function () {
     }
 
     // FUNCTIONS ================================================================
+
+    function getLocale() {
+        return getCookie(LOCALE_KEY);
+    }
+
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    function obtainAddressArray() {
+        $.ajax({
+            url: "client/nodes",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (nodes) {
+                $("#fromNode").autocomplete({
+                    source: nodes
+                });
+                $("#toNode").autocomplete({
+                    source: nodes
+                });
+            }
+        });
+    }
 
     $("#new-order").click(function () {
         $(".client-field").hide();
@@ -27,8 +54,8 @@ $(function () {
         $("#new-order-form")[0].reset();
         $("#new-order-form").show();
         $("#new-order-title").show();
+        obtainAddressArray();
     });
-
     function refreshStatusPageWithCourierData(courierDto) {
         console.log(courierDto);
         $("#currentNodeId").val(courierDto.currentNodeId);
@@ -45,10 +72,10 @@ $(function () {
     }
     function refreshStatus() {
         $.ajax({
-            url: "dashboard/courier/status/refresh",
+            url: "courier/status/refresh",
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            success: function (courierDto, textStatus, jqXHR) {
+            success: function (courierDto) {
                 refreshStatusPageWithCourierData(courierDto)
             }
         });
@@ -56,7 +83,7 @@ $(function () {
 
     function changeCurrentNodeId(payLoad) {
         $.ajax({
-            url: "dashboard/courier/status/node/change",
+            url: "courier/status/node/change",
             type: "POST",
             data: JSON.stringify(payLoad),
             contentType: "application/json; charset=utf-8",
@@ -82,7 +109,7 @@ $(function () {
 
     function changeReadyStatus() {
         $.ajax({
-            url: "dashboard/courier/status/ready",
+            url: "courier/status/ready",
             type: "GET",
             contentType: "application/json; charset=utf-8",
             success: function (courierDto) {
@@ -99,6 +126,28 @@ $(function () {
         $(".client-field").hide();
         refreshStatus();
         $(".status-management").show();
+    });
+
+
+    $("#show-all-client-orders").click(function () {
+        $("#show-all-client-orders-table").empty();
+        $(".client-field").hide();
+        $.ajax({
+            url: "/client/orders/showAll",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (orderList) {
+                if (orderList.size === 0){
+                    return false;
+                }
+                generateTable(orderList, $("#show-all-client-orders-table"));
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+            }
+        });
+        $(".show-all-client-orders").show();
     });
 
     function addAllColumnHeaders(myList, selector) {
@@ -133,35 +182,14 @@ $(function () {
         }
     }
 
-    $("#show-all-client-orders").click(function () {
-        $("#show-all-client-orders-table").empty();
-        $(".client-field").hide();
-        $.ajax({
-            url: "/dashboard/client/orders/showAll",
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            success: function (orderList, textStatus, jqXHR) {
-                if (orderList.size === 0){
-                    return false;
-                }
-                generateTable(orderList, $("#show-all-client-orders-table"));
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-
-            }
-        });
-        $(".show-all-client-orders").show();
-    });
-
     $("#show-all-courier-orders").click(function () {
         $("#show-all-courier-orders-table").empty();
         $(".client-field").hide();
         $.ajax({
-            url: "/dashboard/courier/orders/showAll",
+            url: "/courier/orders/showAll",
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            success: function (orderList, textStatus, jqXHR) {
+            success: function (orderList) {
                 if (orderList.size === 0){
                     return false;
                 }
@@ -179,25 +207,25 @@ $(function () {
 
         var $form = $("#new-order-form");
         var payLoad = {
-            fromNodeId: $form.find('input[name="fromNodeId"]').val(),
-            toNodeId: $form.find('input[name="toNodeId"]').val()
+            fromNode: $form.find('input[name="fromNode"]').val(),
+            toNode: $form.find('input[name="toNode"]').val()
         };
         calculatePrice(payLoad);
     });
 
     function calculatePrice(payLoad){
         $.ajax({
-            url: "/dashboard/client/orders/new/calculatePrice",
+            url: "/client/orders/new/calculatePrice",
             type: "POST",
             data: JSON.stringify(payLoad),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (data, textStatus, jqXHR) {
+            success: function (data) {
                 $(".client-field .new-order .failure").hide();
                 $("#price").val(data);
                 $("#submit-new-order").attr('disabled', false);
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function () {
                 $(".client-field.new-order.failure").show();
             }
         });
@@ -205,18 +233,18 @@ $(function () {
 
     function createNewOrder(orderData) {
         $.ajax({
-            url: "dashboard/client/orders/new/submit",
+            url: "client/orders/new/submit",
             type: "POST",
             data: JSON.stringify(orderData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (data, textStatus, jqXHR) {
+            success: function () {
                 $("#new-order-form").hide();
                 $("#new-order-title").hide();
                 $(".new-order-failure").hide();
                 $(".new-order-successful").show();
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function () {
                 $(".new-order-successful").hide();
                 $(".new-order-failure").show();
             }
@@ -231,12 +259,10 @@ $(function () {
             productName: $form.find('input[name="productName"]').val(),
             weight: $form.find('input[name="weight"]').val(),
             volume: $form.find('input[name="volume"]').val(),
-            fromNodeId: $form.find('input[name="fromNodeId"]').val(),
-            toNodeId: $form.find('input[name="toNodeId"]').val(),
+            fromNode: $form.find('input[name="fromNode"]').val(),
+            toNode: $form.find('input[name="toNode"]').val(),
             price: $form.find('input[name="price"]').val()
         };
         createNewOrder(orderData);
     });
-
-
 });

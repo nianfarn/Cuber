@@ -1,13 +1,13 @@
 
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (0, 'Initial Node', 'Initial Node');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (1, 'Dolgobrodskaya street', 'Dolgobrodskaya street');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (2, 'Prospect Nezavisimosti', 'Prospect Nezavisimosti');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (3, 'Yankovskogo street', 'Yankovskogo street');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (4, 'Gazety Zvyazda avenue', 'Gazety Zvyazda avenue');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (5, 'Korolya street', 'Korolya street');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (6, 'Karla Libknehta street', 'Karla Libknehta street');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (7, 'Surganova street', 'Surganova street');
-INSERT INTO NODES(ID, ADDRESS, DESCRIPTION)  VALUES (8, 'Vilnyusskoe shosse', 'Vilnyusskoe shosse');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (0, 'Initial Node', 'Начальная точка');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (1, 'Dolgobrodskaya street', 'улица Долгобродская');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (2, 'Prospect Nezavisimosti', 'проспект Независимости');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (3, 'Yankovskogo street', 'улица Янковского');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (4, 'Gazety Zvyazda avenue', 'проспект газеты Звезда');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (5, 'Korolya street', 'улица Короля');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (6, 'Karla Libknehta street', 'улица Карла Маркса');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (7, 'Surganova street', 'улица Сурганова');
+INSERT INTO NODES(ID, ADDRESS, ADDRESS_RU)  VALUES (8, 'Vilnyusskoe shosse', 'Вильнусское шоссе');
 
 INSERT INTO EDGES(ID, LENGTH, FROMNODE_ID, TONODE_ID) VALUES (1,5.9,1,2);
 INSERT INTO EDGES(ID, LENGTH, FROMNODE_ID, TONODE_ID) VALUES (2,1.7,3,2);

@@ -12,7 +12,7 @@ public class NodeConverterServiceImpl implements ConverterService<Node, NodeDto>
         NodeDto nodeDto = new NodeDto();
         nodeDto.setId(node.getId());
         nodeDto.setAddress(node.getAddress());
-        nodeDto.setDescription(node.getDescription());
+        nodeDto.setAddressRu(node.getAddressRu());
         return nodeDto;
     }
 
@@ -21,7 +21,7 @@ public class NodeConverterServiceImpl implements ConverterService<Node, NodeDto>
         final Node node = new Node();
         node.setId(nodeDto.getId());
         node.setAddress(nodeDto.getAddress());
-        node.setDescription(nodeDto.getDescription());
+        node.setAddressRu(nodeDto.getAddressRu());
         return node;
     }
 }

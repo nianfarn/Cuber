@@ -7,26 +7,7 @@ public class NodeDto implements Serializable {
     private static final long serialVersionUID = -2318719875701604768L;
     private Long id;
     private String address;
-    private String description;
-
-
-    interface New {
-    }
-
-    interface Exist {
-    }
-
-    interface UpdateAddress extends Exist {
-    }
-
-    interface UpdatedDescription extends Exist {
-    }
-
-    interface Update extends Exist {
-    }
-
-    interface Delete extends Exist {
-    }
+    private String addressRu;
 
     public Long getId() {
         return id;
@@ -46,12 +27,12 @@ public class NodeDto implements Serializable {
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAddressRu() {
+        return addressRu;
     }
 
-    public NodeDto setDescription(String description) {
-        this.description = description;
+    public NodeDto setAddressRu(String addressRu) {
+        this.addressRu = addressRu;
         return this;
     }
 

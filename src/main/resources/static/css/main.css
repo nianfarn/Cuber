@@ -1,3 +1,12 @@
+body, html {
+    font-weight: 400;
+    font-family: "Nunito", "Helvetica Neue", arial, sans-serif;
+    background-image: url(../images/main-picture.png);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .tg {
     border-collapse: collapse;
     border-spacing: 0;
@@ -8,11 +17,9 @@
     font-family: Arial, sans-serif;
     font-size: 14px;
     padding: 10px 5px;
-    border-style: solid;
-    border-width: 1px;
     overflow: hidden;
     word-break: normal;
-    border-color: #ccc;
+    border: 1px solid #ccc;
     color: #333;
     background-color: #fff;
 }
@@ -22,11 +29,9 @@
     font-size: 14px;
     font-weight: normal;
     padding: 10px 5px;
-    border-style: solid;
-    border-width: 1px;
     overflow: hidden;
     word-break: normal;
-    border-color: #ccc;
+    border: 1px solid #ccc;
     color: #333;
     background-color: #f0f0f0;
 }
@@ -61,10 +66,10 @@ form.col-md-12 {
     margin-right: auto;
 }
 
+
 .warning {
     color: #ff6666;
 }
-
 
 .softText {
     font-weight: 400;
@@ -93,22 +98,12 @@ form.col-md-12 {
     color: rgba(0, 64, 27, 0.75);
 }
 
-#logreg {
-    margin-top: -23%;
-    margin-bottom: 3%;
+#initial-frame-body {
 }
 
-#submit_log {
+.logreg-btn{
     margin-right: 10px;
-}
-
-#submit_reg {
     margin-left: 10px;
-}
-
-body {
-    font-weight: 400;
-    font-family: "Nunito", "Helvetica Neue", arial, sans-serif;
 }
 
 .modal {
@@ -119,21 +114,23 @@ body {
     display: none;
 }
 
-#logregFormDiv{
-    margin-top: -50%;
+#initial-frame-body{
+    margin-top: 100px;
+    margin-bottom: 100px;
     vertical-align: bottom ;
 }
 
-#bodyPartP{
-    background: white;
-    border-radius: 40px;
-    box-shadow: -3px 0 15px 1px rgba(0, 0, 0, 0.08);
-    padding-bottom: 35px;
-    padding-left: 35px;
-    padding-right: 35px;
+#management-window{
+    width: 700px;
+    display: flex;
 }
 
-#headerCuber{
+#logreg-container{
+    justify-content: center;
+    display: flex;
+}
+
+#cuberBrand{
     color: #6a9020;
     font-family: "Rage Italic", "bold", serif;
 }
@@ -227,3 +224,64 @@ body {
     width: 400px;
 }
 
+/*
+ *  Language Picker
+ */
+.languagepicker {
+    background-color: #FFF;
+    display: inline-block;
+    padding: 0;
+    height: 40px;
+    overflow: hidden;
+    transition: all .3s ease;
+    vertical-align: top;
+    float: left;
+    border-radius: 15px;
+    margin-top: -10px;
+    width: 160px;
+    position: absolute;
+    font-size: 16px;
+}
+
+.languagepicker:hover {
+    height: 121px;
+}
+
+.languagepicker a{
+    color: #000;
+    text-decoration: none;
+}
+
+.languagepicker li {
+    display: block;
+    padding: 0 20px;
+    line-height: 40px;
+    border-top: 1px solid #EEE;
+}
+
+.languagepicker li:hover{
+    background-color: #EEE;
+}
+
+.languagepicker a:first-child li {
+    border: none;
+    background: #FFF !important;
+}
+
+.languagepicker li img {
+    margin-right: 5px;
+}
+
+.small-icon{
+    height: 25px;
+}
+
+.orders-div{
+    width: 30%;
+    font-size: 1.5em;
+}
+
+#orders-div-select-list{
+    overflow:hidden; overflow-y:scroll;
+    height: 500px;
+}

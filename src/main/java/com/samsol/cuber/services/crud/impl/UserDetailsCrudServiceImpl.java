@@ -1,13 +1,11 @@
 package com.samsol.cuber.services.crud.impl;
 
-import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.UserDetailsDto;
-import com.samsol.cuber.entities.AuthorityName;
 import com.samsol.cuber.entities.UserDetails;
 import com.samsol.cuber.repositories.UserDetailsRepository;
 import com.samsol.cuber.services.converters.ConverterService;
 import com.samsol.cuber.services.crud.UserDetailsCrudService;
-import com.samsol.cuber.services.security.JwtRegistrationRequest;
+import com.samsol.cuber.controllers.requests.JwtRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;

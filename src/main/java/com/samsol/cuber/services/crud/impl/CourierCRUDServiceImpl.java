@@ -4,36 +4,27 @@ import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.entities.Courier;
 import com.samsol.cuber.repositories.CourierRepository;
 import com.samsol.cuber.services.converters.ConverterService;
-import com.samsol.cuber.services.crud.CourierCRUDService;
+import com.samsol.cuber.services.crud.CourierCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
-public class CourierCRUDServiceImpl implements CourierCRUDService {
-
-    private CourierRepository courierRepository;
-    private ConverterService<Courier, CourierDto> converter;
+public class CourierCrudServiceImpl implements CourierCrudService {
 
     @Autowired
-    public CourierCRUDServiceImpl(CourierRepository courierRepository, ConverterService<Courier, CourierDto> converter) {
-        this.courierRepository = courierRepository;
-        this.converter = converter;
+    private CourierRepository courierRepository;
+    @Autowired
+    private ConverterService<Courier, CourierDto> converter;
+
+    public void addCourier(@Valid CourierDto courierDto){
+        courierRepository.save(converter.convertToEntity(courierDto));
     }
 
-    public void addCourier(CourierDto courierDto) {
-        if (courierRepository.existsById(courierDto.getId()))
-            System.out.println("This courier is already exist!\nUpdated");//todo translate into log
-        else
-            courierRepository.save(converter.convertToEntity(courierDto));
-    }
-
-    public void updateCourier(CourierDto courierDto) {
-        if (!courierRepository.existsById(courierDto.getId()))
-            System.out.println("This courier is not exist! \nCreated"); //todo translate into log
-        else
-            courierRepository.save(converter.convertToEntity(courierDto));
+    public void updateCourier(@Valid CourierDto courierDto) {
+        courierRepository.save(converter.convertToEntity(courierDto));
     }
 
     public void removeCourierById(long id) {

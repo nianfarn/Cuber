@@ -1,13 +1,10 @@
 package com.samsol.cuber.services.crud;
 
-import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.CourierDto;
-import com.samsol.cuber.services.security.JwtRegistrationRequest;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface CourierCRUDService {
+public interface CourierCrudService {
     void addCourier(CourierDto courierDto);
 
     void updateCourier(CourierDto courierDto);

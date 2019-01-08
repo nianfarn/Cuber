@@ -5,7 +5,7 @@ import com.samsol.cuber.dto.NodeDto;
 
 import java.util.List;
 
-public interface EdgeCRUDService {
+public interface EdgeCrudService {
     void addEdgeEntity(EdgeDto edgeDto);
 
     void updateEdgeEntity(EdgeDto edgeDto);

@@ -3,15 +3,15 @@ package com.samsol.cuber.controllers;
 import com.samsol.cuber.dto.ClientDto;
 import com.samsol.cuber.dto.CourierDto;
 import com.samsol.cuber.dto.UserDetailsDto;
-import com.samsol.cuber.services.crud.ClientCRUDService;
-import com.samsol.cuber.services.crud.CourierCRUDService;
+import com.samsol.cuber.services.crud.ClientCrudService;
+import com.samsol.cuber.services.crud.CourierCrudService;
 import com.samsol.cuber.services.crud.UserDetailsCrudService;
-import com.samsol.cuber.services.security.JwtAuthenticationRequest;
-import com.samsol.cuber.services.security.JwtRegistrationRequest;
+import com.samsol.cuber.controllers.requests.JwtAuthenticationRequest;
+import com.samsol.cuber.controllers.requests.JwtRegistrationRequest;
 import com.samsol.cuber.services.security.JwtTokenUtil;
 import com.samsol.cuber.services.security.JwtUser;
-import com.samsol.cuber.services.security.responces.JwtAuthenticationResponse;
-import com.samsol.cuber.services.security.responces.JwtRegistrationResponse;
+import com.samsol.cuber.controllers.responses.JwtAuthenticationResponse;
+import com.samsol.cuber.controllers.responses.JwtRegistrationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,10 +54,10 @@ public class AuthenticationRestController {
     private UserDetailsCrudService userDetailsCrudService;
 
     @Autowired
-    private CourierCRUDService courierCRUDService;
+    private CourierCrudService courierCRUDService;
 
     @Autowired
-    private ClientCRUDService clientCRUDService;
+    private ClientCrudService clientCRUDService;
 
 
     @PostMapping(value = "${jwt.route.authentication.path}")
@@ -94,7 +92,7 @@ public class AuthenticationRestController {
                     return ResponseEntity.ok().body(new JwtRegistrationResponse("Courier was successfully created!"));
             }
         } else {
-            return ResponseEntity.badRequest().body(new JwtRegistrationResponse("User already exist"));
+            return ResponseEntity.badRequest().body(new JwtRegistrationResponse("Such user already exist"));
         }
         return null;
     }

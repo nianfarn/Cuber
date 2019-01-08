@@ -1,6 +1,6 @@
 package com.samsol.cuber.config;
 
-import com.samsol.cuber.services.auth.JwtUserDetailsService;
+import com.samsol.cuber.services.security.JwtUserDetailsService;
 import com.samsol.cuber.services.security.JwtAuthenticationEntryPoint;
 import com.samsol.cuber.services.security.JwtAuthorizationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
-
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

@@ -23,8 +23,8 @@ public class Node implements Serializable {
     @Column(unique = true)
     private String address;
 
-    @Column
-    private String description;
+    @Column(unique = true)
+    private String addressRu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fromNode")
     private List<Edge> adjacencies;
@@ -59,12 +59,12 @@ public class Node implements Serializable {
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAddressRu() {
+        return addressRu;
     }
 
-    public Node setDescription(String description) {
-        this.description = description;
+    public Node setAddressRu(String addressRu) {
+        this.addressRu = addressRu;
         return this;
     }
 

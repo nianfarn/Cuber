@@ -7,40 +7,28 @@ import com.samsol.cuber.entities.Node;
 import com.samsol.cuber.repositories.EdgeRepository;
 import com.samsol.cuber.repositories.NodeRepository;
 import com.samsol.cuber.services.converters.ConverterService;
-import com.samsol.cuber.services.crud.EdgeCRUDService;
+import com.samsol.cuber.services.crud.EdgeCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EdgeCRUDServiceImpl implements EdgeCRUDService {
-
-    private EdgeRepository edgeRepository;
-    private NodeRepository nodeRepository;
-    private ConverterService<Edge, EdgeDto> converter;
-    private ConverterService<Node, NodeDto> nodeConverter;
+public class EdgeCrudServiceImpl implements EdgeCrudService {
 
     @Autowired
-    public EdgeCRUDServiceImpl(EdgeRepository edgeRepository, NodeRepository nodeRepository, ConverterService<Edge, EdgeDto> converter, ConverterService<Node, NodeDto> nodeConverter) {
-        this.edgeRepository = edgeRepository;
-        this.nodeRepository = nodeRepository;
-        this.converter = converter;
-        this.nodeConverter = nodeConverter;
-    }
+    private EdgeRepository edgeRepository;
+    @Autowired
+    private ConverterService<Edge, EdgeDto> converter;
+    @Autowired
+    private ConverterService<Node, NodeDto> nodeConverter;
 
     public void addEdgeEntity(EdgeDto edgeDto) {
-        if (edgeRepository.existsById(edgeDto.getId()))
-            System.out.println("This transition is already exist!\nUpdated");//todo translate into log
-        else
-            edgeRepository.save(converter.convertToEntity(edgeDto));
+        edgeRepository.save(converter.convertToEntity(edgeDto));
     }
 
     public void updateEdgeEntity(EdgeDto edgeDto) {
-        if (!edgeRepository.existsById(edgeDto.getId()))
-            System.out.println("This transition is not exist! \nCreated"); //todo translate into log
-        else
-            edgeRepository.save(converter.convertToEntity(edgeDto));
+        edgeRepository.save(converter.convertToEntity(edgeDto));
     }
 
     public void removeEdgeEntityById(long id) {
